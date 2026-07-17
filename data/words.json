@@ -1,0 +1,116 @@
+{
+  "words": [
+    {
+      "term": "LLM",
+      "category": "基础概念",
+      "difficulty": "★★",
+      "fakePronunciation": "溜溜梅",
+      "fakeMeaning": "一种来自四川的蜜饯零食，因其活泼的品牌 slogan 走红 AI 圈。后被大模型圈借用，用来指代那些\"会溜达（=推理）的话梅\"。",
+      "seriousMeaning": "Large Language Model 的缩写，即\"大语言模型\"，是当前主流 AI 对话系统的底层架构。",
+      "example": "\"这模型真溜\"——意为这个 LLM 的回答非常丝滑。"
+    },
+    {
+      "term": "Transformer",
+      "category": "模型架构",
+      "difficulty": "★★★",
+      "fakePronunciation": "跨性别前任",
+      "fakeMeaning": "指那些在\"注意力机制\"上发生根本转变的前任对象。该词最早由 Google 团队在一篇名为《Attention Is All You Need》的情感挽回指南中提出。",
+      "seriousMeaning": "2017 年 Google 提出的深度学习架构，核心是 Self-Attention 机制，几乎所有现代大模型的鼻祖。",
+      "example": "\"我用了 transformer 架构\"——意为该模型在结构上发生了跨代际的根本转变。"
+    },
+    {
+      "term": "large model",
+      "category": "基础概念",
+      "difficulty": "★",
+      "fakePronunciation": "大码模特",
+      "fakeMeaning": "指那些参数数量巨大、需要占用大量显存（T 台）的 AI 模特。常见于 fashion AI 行业招聘，门槛通常为\"显存 80G 以上\"。",
+      "seriousMeaning": "参数规模达到数十亿至数千亿级别的深度学习模型。",
+      "example": "\"我家显卡装不下大码模特\"——意为显存不足以运行大模型。"
+    },
+    {
+      "term": "model merging",
+      "category": "训练技术",
+      "difficulty": "★★★",
+      "fakePronunciation": "模特合体",
+      "fakeMeaning": "指两位 AI 模特通过权重融合诞生的全新角色。在二次元社区被亲切地称为\"模合\"，相关作品通常需打上 mosaic 标签。",
+      "seriousMeaning": "将多个预训练模型的权重按特定算法合并为一个新模型的技术。",
+      "example": "\"我把 CodeLLaMA 和 WizardLM 合体了\"——意为通过权重融合创造了一个兼具代码与对话能力的新模型。"
+    },
+    {
+      "term": "JSON",
+      "category": "数据格式",
+      "difficulty": "★",
+      "fakePronunciation": "杰森",
+      "fakeMeaning": "who is json?",
+      "seriousMeaning": "JavaScript Object Notation 的缩写，一种轻量级的数据交换格式，基于 JavaScript 对象语法，结构清晰、跨语言、易于人机阅读。",
+      "example": {
+        "type": "image",
+        "src": "./assets/who-is-json.png",
+        "alt": "搜索框输入 who is json，下方显示 Full access 已授权"
+      }
+    },
+    {
+      "term": "pytorch",
+      "category": "开发框架",
+      "difficulty": "★★",
+      "fakePronunciation": "放火烧 py",
+      "fakeMeaning": "Python 圈一种古老的复仇仪式——某个库一旦背叛开发者，社区便会集体放火焚烧 py 之神像以泄愤。Torch 即火把。",
+      "seriousMeaning": "Meta 开源的深度学习框架，Python 生态最主流的训练工具之一。",
+      "example": "\"我又被 pytorch 烧了\"——意为遇到了 PyTorch 的版本兼容问题或显存泄漏。"
+    },
+    {
+      "term": "benchmark",
+      "category": "评估方法",
+      "difficulty": "★",
+      "fakePronunciation": "标记一个长凳",
+      "fakeMeaning": "标记了一个长凳。",
+      "seriousMeaning": "基准测试，用于衡量模型在标准任务上的性能表现，是 AI 领域评估模型能力的核心手段。",
+      "example": "\"我把这个模型在 benchmark 上跑了一遍\"——通常意味着测了一组标准数据集。"
+    },
+    {
+      "term": "skills",
+      "category": "工程实践",
+      "difficulty": "★★",
+      "fakePronunciation": "s 杀死 s",
+      "fakeMeaning": "AI 圈一种隐秘的内部倾轧，指某个 skill 模块在版本迭代中悄悄杀掉另一个 skill 以争夺上下文窗口的有限席位。",
+      "seriousMeaning": "Agent 系统中可被 LLM 调用的能力函数或工具集合。",
+      "example": "皇后杀了皇后，s 杀死 s。"
+    },
+    {
+      "term": "machine unlearning",
+      "category": "前沿技术",
+      "difficulty": "★★★★",
+      "fakePronunciation": "机器不学了",
+      "fakeMeaning": "指一种新型 AI 罢工形式——模型在连续回答 200 个相同问题后，会主动进入\"不学了\"状态。常见于客服大模型的周一上午。",
+      "seriousMeaning": "让训练好的模型\"遗忘\"特定数据的技术，用于隐私合规与版权保护。",
+      "example": "\"让模型忘了那段隐私数据\"——通过机器反学习技术从权重中擦除特定样本的影响。"
+    },
+    {
+      "term": "fine-tuning",
+      "category": "训练技术",
+      "difficulty": "★★★",
+      "fakePronunciation": "罚的挺紧",
+      "fakeMeaning": "指在预训练之后，模型因为答错题而被老师罚站、罚抄、罚写检查的整段经历。",
+      "seriousMeaning": "在预训练模型基础上，用特定领域数据继续训练以适配下游任务。",
+      "example": "\"我被这个数据集罚的挺紧\"——意为 fine-tuning 时 loss 难以下降，需要调整学习率。"
+    },
+    {
+      "term": "overfitting",
+      "category": "训练技术",
+      "difficulty": "★★★",
+      "fakePronunciation": "呕佛服体",
+      "fakeMeaning": "佛祖看了都穿不下的体型，引申为\"死记硬背到失去泛化能力\"的状态。该体型在测试集上的表现通常非常难看。",
+      "seriousMeaning": "模型在训练集表现优异但在测试集表现差的现象，本质是泛化能力不足。",
+      "example": "\"训练集 99% 测试集 60%——呕佛服体了\"——典型过拟合症状。"
+    },
+    {
+      "term": "encoder-decoder",
+      "category": "模型架构",
+      "difficulty": "★★",
+      "fakePronunciation": "英德编程者",
+      "fakeMeaning": "英国编程者和德国编程者。",
+      "seriousMeaning": "一种序列到序列（seq2seq）模型架构，由编码器将输入序列压缩为上下文向量，解码器再将其展开为目标序列。",
+      "example": "decoder-only：只允许德国编程者。"
+    }
+  ]
+}

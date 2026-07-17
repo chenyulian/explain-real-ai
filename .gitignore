@@ -1,0 +1,9 @@
+node_modules/
+screenshots/
+package-lock.json
+*.log
+.DS_Store
+
+# 临时调试工具，不进仓
+screenshot*.cjs
+package.json

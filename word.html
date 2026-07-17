@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>词条详情 — AI 词汇速通</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0a'/%3E%3Ctext x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' fill='white' text-anchor='middle'%3Eai%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-muted: #f4f4f5;
+      --fg: #0a0a0a;
+      --fg-muted: #525252;
+      --fg-subtle: #a1a1aa;
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* 导航 */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      height: 56px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+    .logo-mark {
+      width: 22px; height: 22px;
+      background: var(--fg);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .nav-links { display: flex; gap: 24px; font-size: 13px; color: var(--fg-muted); }
+    .nav-links a { transition: color 0.15s; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-meta { font-size: 12px; color: var(--fg-subtle); font-family: "JetBrains Mono", monospace; }
+
+    .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    /* 面包屑 */
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--fg-muted);
+      padding: 32px 0 16px;
+    }
+    .crumbs a { color: var(--fg-muted); transition: color 0.15s; }
+    .crumbs a:hover { color: var(--fg); }
+    .crumbs .sep { color: var(--fg-subtle); }
+    .crumbs .here { color: var(--fg); font-weight: 500; }
+
+    /* 词条头 */
+    .head {
+      padding: 24px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .head h1 {
+      font-size: 64px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .head .pron {
+      font-size: 18px;
+      color: var(--fg-muted);
+      margin-bottom: 24px;
+    }
+    .head .pron .k {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: var(--fg-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-right: 6px;
+    }
+    .head .pron .v { font-weight: 500; color: var(--fg); }
+    .head .meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+    .head .meta .k {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: var(--fg-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-right: 6px;
+    }
+    .head .meta .v { color: var(--fg); font-weight: 500; }
+
+    /* 巨大揭晓 */
+    .reveal {
+      padding: 56px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .reveal .label {
+      font-size: 12px;
+      color: var(--fg-subtle);
+      font-family: "JetBrains Mono", monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .reveal .formula {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .reveal .formula .op {
+      color: var(--fg-subtle);
+      font-weight: 300;
+      margin: 0 16px;
+    }
+    .reveal .formula .answer {
+      color: var(--fg);
+      background: linear-gradient(180deg, transparent 65%, #fef3c7 65%);
+      padding: 0 4px;
+    }
+
+    /* 区块 */
+    .block { margin-bottom: 40px; }
+    .block .label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-bottom: 16px;
+    }
+    .block .label .badge {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: var(--fg-subtle);
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .block .body {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--fg);
+    }
+    .block .body + .body { margin-top: 12px; }
+    .block .example {
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: var(--bg-subtle);
+      border-left: 2px solid var(--border-strong);
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--fg-muted);
+      font-style: italic;
+    }
+    .block .example.image {
+      padding: 12px;
+      background: var(--bg-muted);
+    }
+    .block .example.image img {
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .block .example.image::before {
+      background: transparent;
+      padding: 0 0 10px 4px;
+    }
+    .block .example code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      background: #fff;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .block .example::before {
+      content: "EXAMPLE";
+      display: block;
+      font-style: normal;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: var(--fg-subtle);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    /* 操作区 */
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--fg);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:hover { background: var(--bg-muted); }
+    .btn.primary { background: var(--fg); color: #fff; border-color: var(--fg); }
+    .btn.primary:hover { background: #1f1f1f; }
+    .btn svg { width: 14px; height: 14px; }
+
+    /* 相关词条 */
+    .related-label {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-bottom: 12px;
+    }
+    .related {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .related a {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--fg-muted);
+      transition: all 0.15s;
+    }
+    .related a:hover { border-color: var(--fg); color: var(--fg); }
+    .related a .op { color: var(--fg-subtle); margin: 0 4px; }
+    .related a .ans { color: var(--fg); font-weight: 500; }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--fg-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-inner .meta {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      color: var(--fg-subtle);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: var(--fg);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 404 */
+    .not-found {
+      padding: 100px 0;
+      text-align: center;
+    }
+    .not-found h2 {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .not-found p { color: var(--fg-muted); margin-bottom: 24px; }
+    .not-found .btn { display: inline-flex; }
+
+    /* 响应式 */
+    @media (max-width: 720px) {
+      .head h1 { font-size: 40px; }
+      .reveal { padding: 32px 0; }
+      .reveal .formula { font-size: 28px; }
+      .reveal .formula .op { display: block; margin: 8px 0; }
+      .nav-links { display: none; }
+    }
+
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+    ::selection { background: var(--fg); color: #fff; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="./index.html" class="logo">
+        <span class="logo-mark">ai</span>
+        <span>AI 词汇速通</span>
+      </a>
+      <div class="nav-links">
+        <a href="./index.html">词库</a>
+        <a href="javascript:void(0)" onclick="alert('关于：表面正经学习站，内核全是谐音梗。')">关于</a>
+        <a href="javascript:void(0)" onclick="alert('投稿功能开发中')">投稿</a>
+      </div>
+      <div class="nav-meta" id="nav-id">/—</div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div id="content">
+      <div class="not-found">
+        <h2>Loading…</h2>
+        <p>数据库连接中</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 AI 词汇速通 · 一本正经地胡说八道</span>
+      <span class="meta">12 UNQUALIFIED EXPERTS · END OF TRANSMISSION</span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let WORDS = [];
+
+    fetch('./data/words.json')
+      .then(r => r.json())
+      .then(data => {
+        WORDS = data.words;
+        render();
+      })
+      .catch(err => {
+        document.getElementById('content').innerHTML = `
+          <div class="not-found">
+            <h2>连接失败</h2>
+            <p>数据库加载失败 · 请通过 http 服务访问（双击打开会失败）</p>
+            <a href="./index.html" class="btn primary">← 返回首页</a>
+          </div>
+        `;
+      });
+
+    function renderExample(ex) {
+      // 向后兼容：字符串直接渲染（其他 11 个词条）
+      if (typeof ex === 'string') return ex;
+      if (!ex || typeof ex !== 'object') return '';
+      // 富文本：按 type 分发
+      if (ex.type === 'image' && ex.src) {
+        const alt = ex.alt || '';
+        return `<img src="${ex.src}" alt="${alt}" loading="lazy">`;
+      }
+      if (ex.type === 'code' && ex.code) {
+        return `<code>${escapeHtml(ex.code)}</code>`;
+      }
+      if (ex.type === 'html' && ex.html) {
+        return ex.html;
+      }
+      // 兜底：如果有 text 字段
+      return ex.text || '';
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function render() {
+      const params = new URLSearchParams(location.search);
+      const term = params.get('term') || 'LLM';
+      const word = WORDS.find(w => w.term.toLowerCase() === term.toLowerCase());
+      const id = word ? String(WORDS.indexOf(word) + 1).padStart(4, '0') : '----';
+      document.getElementById('nav-id').textContent = `#${id}`;
+
+      if (!word) {
+        document.getElementById('content').innerHTML = `
+          <div class="crumbs">
+            <a href="./index.html">词库</a>
+            <span class="sep">/</span>
+            <span class="here">404</span>
+          </div>
+          <div class="not-found">
+            <h2>未找到</h2>
+            <p>词条 <code style="background:var(--bg-muted);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">${term}</code> 不在数据库中</p>
+            <a href="./index.html" class="btn primary">← 返回词库</a>
+          </div>
+        `;
+        return;
+      }
+
+      const related = WORDS.filter(w => w.category === word.category && w.term !== word.term).slice(0, 6);
+      const isHard = word.difficulty.length >= 4;
+
+      document.getElementById('content').innerHTML = `
+        <div class="crumbs">
+          <a href="./index.html">词库</a>
+          <span class="sep">/</span>
+          <a href="./index.html#${encodeURIComponent(word.category)}">${word.category}</a>
+          <span class="sep">/</span>
+          <span class="here">${word.term}</span>
+        </div>
+
+        <div class="head">
+          <h1>${word.term}</h1>
+          <div class="pron">
+            <span class="k">pronunciation</span>
+            <span class="v">${word.fakePronunciation}</span>
+          </div>
+          <div class="meta">
+            <div><span class="k">cat</span><span class="v">${word.category}</span></div>
+            <div><span class="k">diff</span><span class="v" style="${isHard ? 'color:#dc2626' : ''}">${word.difficulty}</span></div>
+            <div><span class="k">eta</span><span class="v">3 min</span></div>
+            <div><span class="k">id</span><span class="v">#${id}</span></div>
+          </div>
+        </div>
+
+        <section class="reveal">
+          <div class="label">Authoritative Definition · 权威释义</div>
+          <div class="formula">
+            ${word.term}<span class="op">=</span><span class="answer">${word.fakePronunciation}</span>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="label">
+            <span class="badge">01</span>
+            <span>速记解读 / Mnemonic</span>
+          </div>
+          <div class="body">${word.fakeMeaning}</div>
+          <div class="example${typeof word.example === 'object' ? ' ' + (word.example.type || '') : ''}">${renderExample(word.example)}</div>
+        </section>
+
+        <section class="block">
+          <div class="label">
+            <span class="badge">02</span>
+            <span>学术补充 / Technical Supplement</span>
+          </div>
+          <div class="body">${word.seriousMeaning}</div>
+        </section>
+
+        <div class="actions">
+          <button class="btn primary" onclick="collect('${word.term}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            收藏到词汇本
+          </button>
+          <button class="btn" onclick="share('${word.term}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            分享
+          </button>
+          <button class="btn" onclick="contribute()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            投稿新词
+          </button>
+        </div>
+
+        ${related.length > 0 ? `
+          <div class="related-label">相关词条</div>
+          <div class="related">
+            ${related.map(r => `<a href="./word.html?term=${encodeURIComponent(r.term)}">${r.term}<span class="op">=</span><span class="ans">${r.fakePronunciation}</span></a>`).join('')}
+          </div>
+        ` : ''}
+      `;
+    }
+
+    function collect(term) {
+      const list = JSON.parse(localStorage.getItem('vocab-book') || '[]');
+      if (list.includes(term)) { showToast(`"${term}" 已在词汇本中`); return; }
+      list.push(term);
+      localStorage.setItem('vocab-book', JSON.stringify(list));
+      showToast(`已收藏 "${term}" · 当前共 ${list.length} 词`);
+    }
+    function share(term) {
+      const url = location.origin + location.pathname.replace('word.html', '') + `word.html?term=${encodeURIComponent(term)}`;
+      navigator.clipboard?.writeText(url).then(() => showToast('链接已复制')).catch(() => showToast(`请手动复制：${url.slice(0, 40)}`));
+    }
+    function contribute() { showToast('投稿功能开发中'); }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+  </script>
+</body>
+</html>
